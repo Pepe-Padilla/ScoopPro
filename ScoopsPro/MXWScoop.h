@@ -22,14 +22,17 @@
 @property (strong, nonatomic) NSNumber * longitude;
 @property (strong, nonatomic) NSNumber * ranking;
 @property (strong, nonatomic) NSNumber * status;
-
-
 @property (copy, nonatomic) NSString * scoopID;
+@property (copy, nonatomic) NSString * authorID;
 
 
 -(id) initWithDictionary:(NSDictionary*) dictionary
                   client:(MSClient *) aClient;
 
 -(NSDictionary*) dictionaryForScoop;
+
++(instancetype)scoopWithTitle: (NSString*) title
+                     authorID: (NSString*) authorID
+                      cliennt: (MSClient *) aClient;
 
 @end

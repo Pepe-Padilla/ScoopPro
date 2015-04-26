@@ -19,7 +19,8 @@
 
 @implementation MXWScoop
 
-+(instancetype)scoopWithTitle:(NSString*) title
++(instancetype)scoopWithTitle: (NSString*) title
+                     authorID: (NSString*) authorID
                       cliennt: (MSClient *) aClient{
     
     NSDictionary* aScoop = @{MXWTITLESCOOP : title,
@@ -31,7 +32,8 @@
                              MXWLATITUDE   : @0,
                              MXWRANKING    : @0,
                              MXWSTATUS     : MXWSTATUS_EDITING,
-                             MXWSCOOPID    : @""};
+                             MXWSCOOPID    : @"",
+                             MXWAUTHORID   : authorID};
     return [[MXWScoop alloc] initWithDictionary:aScoop
                                          client:aClient];
 }

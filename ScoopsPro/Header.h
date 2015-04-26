@@ -18,6 +18,7 @@
 #define MXWRANKING @"ranking"
 #define MXWSTATUS @"status"
 #define MXWSCOOPID @"id"
+#define MXWAUTHORID @"authorid"
 
 // scoop status
 #define MXWSTATUS_EDITING @0
