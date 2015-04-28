@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B17BCAE61AF011F9000FFF22 /* MXWScoopsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B17BCAE51AF011F9000FFF22 /* MXWScoopsTableViewController.m */; };
 		B1A261E21AEBA5ED00F229FF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A261E11AEBA5ED00F229FF /* main.m */; };
 		B1A261E51AEBA5ED00F229FF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A261E41AEBA5ED00F229FF /* AppDelegate.m */; };
 		B1A261ED1AEBA5ED00F229FF /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B1A261EC1AEBA5ED00F229FF /* Images.xcassets */; };
@@ -28,6 +29,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B17BCAE41AF011F9000FFF22 /* MXWScoopsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXWScoopsTableViewController.h; sourceTree = "<group>"; };
+		B17BCAE51AF011F9000FFF22 /* MXWScoopsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXWScoopsTableViewController.m; sourceTree = "<group>"; };
 		B1A261DC1AEBA5ED00F229FF /* ScoopsPro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScoopsPro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B1A261E01AEBA5ED00F229FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B1A261E11AEBA5ED00F229FF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -65,6 +68,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B17BCAE71AF01D20000FFF22 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				B17BCAE41AF011F9000FFF22 /* MXWScoopsTableViewController.h */,
+				B17BCAE51AF011F9000FFF22 /* MXWScoopsTableViewController.m */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
 		B1A261D31AEBA5ED00F229FF = {
 			isa = PBXGroup;
 			children = (
@@ -93,6 +105,7 @@
 				B1A261EE1AEBA5ED00F229FF /* LaunchScreen.xib */,
 				B1A262081AEBB4F400F229FF /* Model */,
 				B1A261DF1AEBA5ED00F229FF /* Supporting Files */,
+				B17BCAE71AF01D20000FFF22 /* Controllers */,
 			);
 			path = ScoopsPro;
 			sourceTree = "<group>";
@@ -235,6 +248,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B17BCAE61AF011F9000FFF22 /* MXWScoopsTableViewController.m in Sources */,
 				B1A262071AEBB4EE00F229FF /* MXWScoop.m in Sources */,
 				B1A2620B1AEBB52600F229FF /* MXWScoopFeed.m in Sources */,
 				B1A261E51AEBA5ED00F229FF /* AppDelegate.m in Sources */,

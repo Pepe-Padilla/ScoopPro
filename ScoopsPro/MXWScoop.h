@@ -8,7 +8,6 @@
 
 @import Foundation;
 @import UIKit;
-#import <WindowsAzureMobileServices/WindowsAzureMobileServices.h>
 
 @interface MXWScoop : NSObject
 
@@ -26,13 +25,11 @@
 @property (copy, nonatomic) NSString * authorID;
 
 
--(id) initWithDictionary:(NSDictionary*) dictionary
-                  client:(MSClient *) aClient;
+-(id) initWithDictionary:(NSDictionary*) dictionary;
 
 -(NSDictionary*) dictionaryForScoop;
 
 +(instancetype)scoopWithTitle: (NSString*) title
-                     authorID: (NSString*) authorID
-                      cliennt: (MSClient *) aClient;
+                     authorID: (NSString*) authorID;
 
 @end

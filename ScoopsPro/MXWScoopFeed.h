@@ -25,7 +25,7 @@
 
 
 -(void) warmupClient;
--(void) chargeTables;
+-(void) chargeTableswithCompletion: (void (^)(NSError *err))completionBlock;
 -(void) addNewScoopWithitle: (NSString*) title;
 -(void) updateScoopWithScoop: (MXWScoop *) aScoop;
 -(void) loginAppInViewController: (UIViewController*) controller

@@ -32,61 +32,65 @@
     NSLog(@"%@", self.client.debugDescription);
 }
 
--(void) chargeTables {
-    MSTable *table = [self.client tableWithName:@"news"];
+-(void) chargeTableswithCompletion: (void (^)(NSError *err))completionBlock {
     
-    [table queryWithPredicate:[NSPredicate predicateWithFormat:@"%K = %@",MXWSTATUS,MXWSTATUS_ACCEPTED]];
-    
-    
-    MSQuery *queryModel = [[MSQuery alloc]initWithTable:table];
-    [queryModel orderByDescending:MXWFXSUBMITED];
-    queryModel.fetchLimit = 50;
-    
-    [queryModel readWithCompletion:^(NSArray *items, NSInteger totalCount, NSError *error) {
+    dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+        MSTable *table = [self.client tableWithName:@"news"];
         
-        if (error) {
-            NSLog(@"error at query: %@", error);
-        }
-        for (id item in items) {
-            NSLog(@"item -> %@", item);
-            
-            MXWScoop * scoop = [[MXWScoop alloc] initWithDictionary: item
-                                                             client: self.client];
-            
-            [self.worldScoops addObject:scoop];
-        }
-    }];
-    
-    MSTable *tableA = [self.client tableWithName:@"news"];
-    
-    [tableA queryWithPredicate:[NSPredicate predicateWithFormat:@"%K = %@",MXWAUTHORID,self.userFBId]];
-    
-    
-    MSQuery *queryModelA = [[MSQuery alloc]initWithTable:tableA];
-    [queryModelA orderByDescending:MXWFXCREATION];
-    
-    [queryModelA readWithCompletion:^(NSArray *items, NSInteger totalCount, NSError *error) {
+        [table queryWithPredicate:[NSPredicate predicateWithFormat:@"%K = %@",MXWSTATUS,MXWSTATUS_ACCEPTED]];
         
-        if (error) {
-            NSLog(@"error at query: %@", error);
-        }
-        for (id item in items) {
-            NSLog(@"item -> %@", item);
+        
+        MSQuery *queryModel = [[MSQuery alloc]initWithTable:table];
+        [queryModel orderByDescending:MXWFXSUBMITED];
+        queryModel.fetchLimit = 50;
+        
+        [queryModel readWithCompletion:^(NSArray *items, NSInteger totalCount, NSError *error) {
             
-            MXWScoop * scoop = [[MXWScoop alloc] initWithDictionary: item
-                                                             client: self.client];
+            if (error) {
+                NSLog(@"error at query: %@", error);
+                completionBlock(error); return;
+            }
+            for (id item in items) {
+                NSLog(@"item -> %@", item);
+                
+                MXWScoop * scoop = [[MXWScoop alloc] initWithDictionary: item];
+                
+                [self.worldScoops addObject:scoop];
+            }
+        }];
+        
+        MSTable *tableA = [self.client tableWithName:@"news"];
+        
+        [tableA queryWithPredicate:[NSPredicate predicateWithFormat:@"%K = %@",MXWAUTHORID,self.userFBId]];
+        
+        
+        MSQuery *queryModelA = [[MSQuery alloc]initWithTable:tableA];
+        [queryModelA orderByDescending:MXWFXCREATION];
+        
+        [queryModelA readWithCompletion:^(NSArray *items, NSInteger totalCount, NSError *error) {
             
-            [self.myScoops addObject:scoop];
-        }
-    }];
+            if (error) {
+                NSLog(@"error at query: %@", error);
+                completionBlock(error); return;
+            }
+            for (id item in items) {
+                NSLog(@"item -> %@", item);
+                
+                MXWScoop * scoop = [[MXWScoop alloc] initWithDictionary: item];
+                
+                [self.myScoops addObject:scoop];
+            }
+        }];
+        
+        completionBlock(nil);
+    });
 }
 
 -(void) addNewScoopWithitle: (NSString*) title {
     //self.client
     
     MXWScoop * aScoop = [MXWScoop scoopWithTitle:title
-                                        authorID:self.userFBId
-                                         cliennt:self.client];
+                                        authorID:self.userFBId];
     
     MSTable * news = [self.client tableWithName:@"news"];
     
@@ -96,8 +100,7 @@
               NSLog(@"%@",error);
           } else {
               NSLog(@"OK");
-              MXWScoop * scoop = [[MXWScoop alloc] initWithDictionary: item
-                                                               client: self.client];
+              MXWScoop * scoop = [[MXWScoop alloc] initWithDictionary: item];
               
               [self.myScoops addObject:scoop];
           }
@@ -126,8 +129,7 @@
                if (error) {
                    NSLog(@"Error en el update");
                } else {
-                   MXWScoop * newScoop = [[MXWScoop alloc] initWithDictionary:item
-                                                                       client:self.client];
+                   MXWScoop * newScoop = [[MXWScoop alloc] initWithDictionary:item];
                    [self.myScoops replaceObjectAtIndex:[scoopMod unsignedIntegerValue]
                                             withObject:newScoop];
                }

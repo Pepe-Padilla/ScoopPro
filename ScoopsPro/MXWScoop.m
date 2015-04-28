@@ -12,7 +12,6 @@
 
 @interface MXWScoop ()
 
-@property (strong, nonatomic) MSClient * client;
 
 @end
 
@@ -20,8 +19,7 @@
 @implementation MXWScoop
 
 +(instancetype)scoopWithTitle: (NSString*) title
-                     authorID: (NSString*) authorID
-                      cliennt: (MSClient *) aClient{
+                     authorID: (NSString*) authorID{
     
     NSDictionary* aScoop = @{MXWTITLESCOOP : title,
                              MXWTEXTSCOOP  : @"",
@@ -34,12 +32,10 @@
                              MXWSTATUS     : MXWSTATUS_EDITING,
                              MXWSCOOPID    : @"",
                              MXWAUTHORID   : authorID};
-    return [[MXWScoop alloc] initWithDictionary:aScoop
-                                         client:aClient];
+    return [[MXWScoop alloc] initWithDictionary:aScoop];
 }
 
--(id) initWithDictionary:(NSDictionary*) dictionary
-                  client:(MSClient *)aClient{
+-(id) initWithDictionary:(NSDictionary*) dictionary {
     
     if (self = [super init]) {
         _titleScoop = [dictionary valueForKey:MXWTITLESCOOP];
@@ -52,7 +48,6 @@
         _ranking = [dictionary valueForKey:MXWRANKING];
         _status = [dictionary valueForKey:MXWSTATUS];
         _scoopID = [dictionary valueForKey:MXWSCOOPID];
-        _client = aClient;
     }
     
     return self;

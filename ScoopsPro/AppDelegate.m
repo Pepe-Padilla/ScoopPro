@@ -7,6 +7,9 @@
 //
 
 #import "AppDelegate.h"
+#import "MXWScoopFeed.h"
+#import "MXWScoopsTableViewController.h"
+@import UIKit;
 
 @interface AppDelegate ()
 
@@ -16,7 +19,21 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    
+    MXWScoopFeed * sf = [[MXWScoopFeed alloc] init];
+    
+    MXWScoopsTableViewController* stVC = [[MXWScoopsTableViewController alloc] initWithModel:sf];
+   
+    UINavigationController * sp1Nav = [UINavigationController new];
+    [sp1Nav pushViewController:stVC animated:NO];
+    
+    self.window = [[UIWindow alloc] initWithFrame:
+                   [[UIScreen mainScreen] bounds]];
+    
+    self.window.rootViewController = sp1Nav;
+    
+    [self.window makeKeyAndVisible];
+    
     return YES;
 }
 
