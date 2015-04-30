@@ -61,11 +61,8 @@
                 NSLog(@"Error at logging in--> %@", err);
             } else {
                 self.user = user;
-                [self.theScoops chargeTableswithCompletion:^(NSError *err) {
-                    if (err) {
-                        NSLog(@"Error at charging table --> %@", err);
-                    }
-                }];
+                [self.theScoops performSelector:@selector(chargeTables) withObject:nil afterDelay:1];
+                //[self.theScoops chargeTables];
             }
         }];
         
@@ -148,7 +145,7 @@
     
     
     //Configurar celda
-    cell.imageView.image = aScoop.photoImg;
+    cell.imageView.image = aScoop.imageScoop;
     cell.textLabel.text = aScoop.titleScoop;
     
     if (self.myAuthor) {
@@ -161,6 +158,8 @@
         } else if ([aScoop.status isEqualToNumber:MXWSTATUS_ACCEPTED]) {
             cell.detailTextLabel.text = @"Publicated";
         } else cell.detailTextLabel.text = aScoop.authorName;
+    } else {
+        cell.detailTextLabel.text = aScoop.authorName;
     }
     
     return cell;
@@ -189,9 +188,9 @@
 #pragma mark - KVO
 -(void) setKVO {
     [self.theScoops addObserver:self
-                         forKeyPath:@"myScoops"
-                            options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew
-                            context:NULL];
+                     forKeyPath:@"myScoops"
+                        options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew
+                        context:NULL];
     [self.theScoops addObserver:self
                      forKeyPath:@"worldScoops"
                         options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew

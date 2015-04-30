@@ -16,7 +16,7 @@
 @property (copy, nonatomic) NSString * authorName;
 @property (strong, nonatomic) NSDate * fxCreation;
 @property (strong, nonatomic) NSDate * fxSubmitied;
-@property (strong, nonatomic) UIImage * photoImg;
+@property (strong, nonatomic) NSString * photoImg;
 @property (strong, nonatomic) NSNumber * latitude;
 @property (strong, nonatomic) NSNumber * longitude;
 @property (strong, nonatomic) NSNumber * ranking;
@@ -24,12 +24,15 @@
 @property (copy, nonatomic) NSString * scoopID;
 @property (copy, nonatomic) NSString * authorID;
 
+@property (strong, nonatomic) UIImage * imageScoop;
+
 
 -(id) initWithDictionary:(NSDictionary*) dictionary;
 
 -(NSDictionary*) dictionaryForScoop;
 
 +(instancetype)scoopWithTitle: (NSString*) title
-                     authorID: (NSString*) authorID;
+                     authorID: (NSString*) authorID
+                   authorName: (NSString*) authorName;
 
 @end

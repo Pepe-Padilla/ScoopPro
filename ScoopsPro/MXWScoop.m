@@ -19,15 +19,17 @@
 @implementation MXWScoop
 
 +(instancetype)scoopWithTitle: (NSString*) title
-                     authorID: (NSString*) authorID{
+                     authorID: (NSString*) authorID
+                   authorName: (NSString*) authorName {
     
     NSDictionary* aScoop = @{MXWTITLESCOOP : title,
                              MXWTEXTSCOOP  : @"",
-                             MXWAUTHORNAME : @"",
+                             MXWAUTHORNAME : authorName,
                              MXWFXCREATION : [NSDate date],
-                             //MXWFXSUBMITED : nil,
-                             //MXWPHOTOIMG   : nil,
+                             MXWFXSUBMITED : [NSDate date],
+                             MXWPHOTOIMG   : @"",
                              MXWLATITUDE   : @0,
+                             MXWLONGITUDE  : @0,
                              MXWRANKING    : @0,
                              MXWSTATUS     : MXWSTATUS_EDITING,
                              MXWSCOOPID    : @"",
@@ -45,9 +47,11 @@
         _fxSubmitied = [dictionary valueForKey:MXWFXSUBMITED];
         _photoImg = [dictionary valueForKey:MXWPHOTOIMG];
         _latitude = [dictionary valueForKey:MXWLATITUDE];
+        _longitude = [dictionary valueForKey:MXWLONGITUDE];
         _ranking = [dictionary valueForKey:MXWRANKING];
         _status = [dictionary valueForKey:MXWSTATUS];
         _scoopID = [dictionary valueForKey:MXWSCOOPID];
+        _authorID = [dictionary valueForKey:MXWAUTHORID];
     }
     
     return self;
@@ -61,9 +65,11 @@
              MXWFXSUBMITED : self.fxSubmitied,
              MXWPHOTOIMG   : self.photoImg,
              MXWLATITUDE   : self.latitude,
+             MXWLONGITUDE  : self.longitude,
              MXWRANKING    : self.ranking,
              MXWSTATUS     : self.status,
-             MXWSCOOPID    : self.scoopID};
+             MXWSCOOPID    : self.scoopID,
+             MXWAUTHORID   : self.authorID};
 }
 
 @end

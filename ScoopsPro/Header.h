@@ -30,3 +30,8 @@
 //conection IDs
 #define KAZURE_ENDPOINT @"https://mobileservicekas.azure-mobile.net/"
 #define KAZURE_APPKEY @"YaFoNqANnxgGhFcsquFfBrWUKPiqyN59"
+
+//blob IDs
+#define KAZURE_BLOBACOUNTNAME @"storagekas"
+#define KAZURE_BLOBURL @"https://storagekas.blob.core.windows.net/"
+#define KAZURE_BLOBKEY @"mpySWQ+AvnsYt0SXxdF/2EE6PZSmJCDae+IuhnUboJwLsST3xA5qlO6568y4Jh/QV2grmCjV1TISDTdO+3EgjA=="
