@@ -25,6 +25,7 @@
 @property (copy, nonatomic) NSString * authorID;
 
 @property (strong, nonatomic) UIImage * imageScoop;
+@property (nonatomic) BOOL ranked;
 
 
 -(id) initWithDictionary:(NSDictionary*) dictionary;

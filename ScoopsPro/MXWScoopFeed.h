@@ -12,7 +12,13 @@
 
 @interface MXWScoopFeed : NSObject
 
+typedef void (^CompletionWithSasBlock) (NSString *sasUrl);
+
+
 @property (strong, nonatomic) MSClient * client;
+@property (strong, nonatomic) MSClient * clientBlob;
+
+
 //@property (strong, nonatomic) NSMutableDictionary * scoopsD;
 @property (copy, nonatomic) NSString * userFBId;
 @property (copy, nonatomic) NSString * tokenFB;
@@ -30,8 +36,12 @@
 -(void) chargeTables;
 -(void) addNewScoopWithitle: (NSString*) title;
 -(void) updateScoopWithScoop: (MXWScoop *) aScoop;
+-(void) deleteScoopWithScoop: (MXWScoop *) aScoop;
 -(void) loginAppInViewController: (UIViewController*) controller
                   withCompletion: (void (^)(MSUser*user, NSError *err))completionBlock;
+-(void) rankScoop:(MXWScoop*) aScoop
+            value:(NSInteger)value
+   withCompletion: (void (^)(NSError *err))completionBlock;
 
 //Arrays KVOables
 -(NSInteger) countOfMyScoops;

@@ -52,6 +52,7 @@
         _status = [dictionary valueForKey:MXWSTATUS];
         _scoopID = [dictionary valueForKey:MXWSCOOPID];
         _authorID = [dictionary valueForKey:MXWAUTHORID];
+        _ranked = NO;
     }
     
     return self;

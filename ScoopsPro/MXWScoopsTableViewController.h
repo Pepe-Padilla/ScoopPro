@@ -8,10 +8,25 @@
 
 @import UIKit;
 @class MXWScoopFeed;
+@class MXWScoop;
+@class MXWScoopsTableViewController;
 
-@interface MXWScoopsTableViewController : UITableViewController
+@protocol MXWScoopTableViewControllerDelegate <NSObject>
+
+@optional
+-(void) scoopTableViewController: (MXWScoopsTableViewController *) tVC
+                    andScoopFeed: (MXWScoopFeed *) scoopFeed
+                  didSelectScoop: (MXWScoop *) aScoop;
+
+
+@end
+
+
+@interface MXWScoopsTableViewController : UITableViewController <MXWScoopTableViewControllerDelegate>
 
 @property (strong, nonatomic) MXWScoopFeed * theScoops;
+
+@property (weak, nonatomic) id<MXWScoopTableViewControllerDelegate> delegate;
 
 
 

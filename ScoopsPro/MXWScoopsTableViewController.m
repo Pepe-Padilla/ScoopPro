@@ -7,6 +7,7 @@
 //
 
 #import "MXWScoopsTableViewController.h"
+#import "MXWViewController.h"
 #import "MXWScoopFeed.h"
 #import "MXWScoop.h"
 #import "Header.h"
@@ -35,6 +36,14 @@
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter ];
+    [nc addObserver:self
+           selector:@selector(notifyThatScoopDidChange:)
+               name:SCOOP_DID_CHANGE_NOTIFICATION
+             object:nil];
+
+    
     [self clientStatus];
     
     
@@ -46,10 +55,16 @@
 -(void) viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self turnDownKVO];
 }
+#pragma mark - Notifications
+//SCOOP_DID_CHANGE_NOTIFICATION
+-(void)notifyThatScoopDidChange:(NSNotification*) notification{
+    [self.tableView reloadData];
+}
 
-#pragma mark - Utilities
+#pragma mark - Utiliteis
 - (void) clientStatus {
     [self.theScoops warmupClient];
     
@@ -165,6 +180,21 @@
     return cell;
 }
 
+-(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    MXWScoop * aScoop = nil;
+    if (self.myAuthor) {
+        aScoop = [self.theScoops.myScoops objectAtIndex:indexPath.row];
+    } else {
+        aScoop = [self.theScoops.worldScoops objectAtIndex:indexPath.row];
+    }
+    
+    if ([self.delegate respondsToSelector:@selector(scoopTableViewController:andScoopFeed:didSelectScoop:)]) {
+        [self.delegate scoopTableViewController:self
+                               andScoopFeed:self.theScoops
+                             didSelectScoop:aScoop];
+    }
+    
+}
 
 /*
 // Override to support conditional editing of the table view.
@@ -211,6 +241,16 @@
     
     [self.tableView reloadData];
     
+}
+
+#pragma mark - MXWScoopTableViewControllerDelegate
+-(void) scoopTableViewController: (MXWScoopsTableViewController *) tVC
+                    andScoopFeed: (MXWScoopFeed *) scoopFeed
+                  didSelectScoop: (MXWScoop *) aScoop{
+    
+    MXWViewController * sVC = [[MXWViewController alloc] initWithScoopFeeder:scoopFeed andModel:aScoop];
+    
+    [self.navigationController pushViewController:sVC animated:YES];
 }
 
 
