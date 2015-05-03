@@ -122,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ScoopsPro/MXWViewController.m"
-            timestampString = "452367290.909256"
+            timestampString = "452379447.285774"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "271"
-            endingLineNumber = "271"
+            startingLineNumber = "314"
+            endingLineNumber = "314"
             landmarkName = "-scoopTableViewController:andScoopFeed:didSelectScoop:"
             landmarkType = "5">
          </BreakpointContent>
@@ -154,11 +154,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ScoopsPro/MXWViewController.m"
-            timestampString = "452367290.909256"
+            timestampString = "452378923.934864"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "104"
-            endingLineNumber = "104"
+            startingLineNumber = "118"
+            endingLineNumber = "118"
             landmarkName = "-chargeInitialValues"
             landmarkType = "5">
          </BreakpointContent>

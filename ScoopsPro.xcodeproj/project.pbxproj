@@ -20,6 +20,12 @@
 		B1A262071AEBB4EE00F229FF /* MXWScoop.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A262061AEBB4EE00F229FF /* MXWScoop.m */; };
 		B1A2620B1AEBB52600F229FF /* MXWScoopFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A2620A1AEBB52600F229FF /* MXWScoopFeed.m */; };
 		B1A8F7ED1AEBC72500526EF2 /* WindowsAzureMobileServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1A8F7EC1AEBC72500526EF2 /* WindowsAzureMobileServices.framework */; };
+		B1ACB7F11AF6ACD800E0AC4D /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1ACB7F01AF6ACD800E0AC4D /* CoreData.framework */; };
+		B1ACB7FF1AF6AE1200E0AC4D /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B1ACB7FE1AF6AE1200E0AC4D /* libGoogleAnalyticsServices.a */; };
+		B1ACB8011AF6AE4000E0AC4D /* libAdIdAccess.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B1ACB8001AF6AE4000E0AC4D /* libAdIdAccess.a */; };
+		B1ACB8031AF6AE7600E0AC4D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1ACB8021AF6AE7600E0AC4D /* SystemConfiguration.framework */; };
+		B1ACB8051AF6AE9100E0AC4D /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B1ACB8041AF6AE9100E0AC4D /* libz.dylib */; };
+		B1ACB8071AF6AEBC00E0AC4D /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B1ACB8061AF6AEBC00E0AC4D /* libsqlite3.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +62,22 @@
 		B1A2620A1AEBB52600F229FF /* MXWScoopFeed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXWScoopFeed.m; sourceTree = "<group>"; };
 		B1A8F7EB1AEBBFC600526EF2 /* Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Header.h; sourceTree = "<group>"; };
 		B1A8F7EC1AEBC72500526EF2 /* WindowsAzureMobileServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WindowsAzureMobileServices.framework; path = ../../KeepCodingMaster/CloudComputing/WindowsAzureMobileServices.framework; sourceTree = "<group>"; };
+		B1ACB7F01AF6ACD800E0AC4D /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		B1ACB7F41AF6ADA200E0AC4D /* GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAI.h; sourceTree = "<group>"; };
+		B1ACB7F51AF6ADA200E0AC4D /* GAIDictionaryBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIDictionaryBuilder.h; sourceTree = "<group>"; };
+		B1ACB7F61AF6ADA200E0AC4D /* GAIEcommerceFields.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIEcommerceFields.h; sourceTree = "<group>"; };
+		B1ACB7F71AF6ADA200E0AC4D /* GAIEcommerceProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIEcommerceProduct.h; sourceTree = "<group>"; };
+		B1ACB7F81AF6ADA200E0AC4D /* GAIEcommerceProductAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIEcommerceProductAction.h; sourceTree = "<group>"; };
+		B1ACB7F91AF6ADA200E0AC4D /* GAIEcommercePromotion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIEcommercePromotion.h; sourceTree = "<group>"; };
+		B1ACB7FA1AF6ADA200E0AC4D /* GAIFields.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIFields.h; sourceTree = "<group>"; };
+		B1ACB7FB1AF6ADA200E0AC4D /* GAILogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAILogger.h; sourceTree = "<group>"; };
+		B1ACB7FC1AF6ADA200E0AC4D /* GAITrackedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITrackedViewController.h; sourceTree = "<group>"; };
+		B1ACB7FD1AF6ADA200E0AC4D /* GAITracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITracker.h; sourceTree = "<group>"; };
+		B1ACB7FE1AF6AE1200E0AC4D /* libGoogleAnalyticsServices.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAnalyticsServices.a; sourceTree = "<group>"; };
+		B1ACB8001AF6AE4000E0AC4D /* libAdIdAccess.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libAdIdAccess.a; sourceTree = "<group>"; };
+		B1ACB8021AF6AE7600E0AC4D /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		B1ACB8041AF6AE9100E0AC4D /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		B1ACB8061AF6AEBC00E0AC4D /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,7 +85,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B1ACB8071AF6AEBC00E0AC4D /* libsqlite3.dylib in Frameworks */,
+				B1ACB8051AF6AE9100E0AC4D /* libz.dylib in Frameworks */,
+				B1ACB8031AF6AE7600E0AC4D /* SystemConfiguration.framework in Frameworks */,
+				B1ACB7F11AF6ACD800E0AC4D /* CoreData.framework in Frameworks */,
+				B1ACB8011AF6AE4000E0AC4D /* libAdIdAccess.a in Frameworks */,
 				B1A8F7ED1AEBC72500526EF2 /* WindowsAzureMobileServices.framework in Frameworks */,
+				B1ACB7FF1AF6AE1200E0AC4D /* libGoogleAnalyticsServices.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,6 +129,10 @@
 		B1A261D31AEBA5ED00F229FF = {
 			isa = PBXGroup;
 			children = (
+				B1ACB8061AF6AEBC00E0AC4D /* libsqlite3.dylib */,
+				B1ACB8041AF6AE9100E0AC4D /* libz.dylib */,
+				B1ACB8021AF6AE7600E0AC4D /* SystemConfiguration.framework */,
+				B1ACB7F01AF6ACD800E0AC4D /* CoreData.framework */,
 				B1A8F7EC1AEBC72500526EF2 /* WindowsAzureMobileServices.framework */,
 				B1A261DE1AEBA5ED00F229FF /* ScoopsPro */,
 				B1A261F81AEBA5ED00F229FF /* ScoopsProTests */,
@@ -127,6 +159,7 @@
 				B1A262081AEBB4F400F229FF /* Model */,
 				B1A261DF1AEBA5ED00F229FF /* Supporting Files */,
 				B17BCAE71AF01D20000FFF22 /* Controllers */,
+				B1ACB7F21AF6AD2700E0AC4D /* GA resources */,
 			);
 			path = ScoopsPro;
 			sourceTree = "<group>";
@@ -169,6 +202,34 @@
 			);
 			name = Model;
 			sourceTree = "<group>";
+		};
+		B1ACB7F21AF6AD2700E0AC4D /* GA resources */ = {
+			isa = PBXGroup;
+			children = (
+				B1ACB7F31AF6ADA200E0AC4D /* Library */,
+				B1ACB7FE1AF6AE1200E0AC4D /* libGoogleAnalyticsServices.a */,
+				B1ACB8001AF6AE4000E0AC4D /* libAdIdAccess.a */,
+			);
+			name = "GA resources";
+			sourceTree = "<group>";
+		};
+		B1ACB7F31AF6ADA200E0AC4D /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				B1ACB7F41AF6ADA200E0AC4D /* GAI.h */,
+				B1ACB7F51AF6ADA200E0AC4D /* GAIDictionaryBuilder.h */,
+				B1ACB7F61AF6ADA200E0AC4D /* GAIEcommerceFields.h */,
+				B1ACB7F71AF6ADA200E0AC4D /* GAIEcommerceProduct.h */,
+				B1ACB7F81AF6ADA200E0AC4D /* GAIEcommerceProductAction.h */,
+				B1ACB7F91AF6ADA200E0AC4D /* GAIEcommercePromotion.h */,
+				B1ACB7FA1AF6ADA200E0AC4D /* GAIFields.h */,
+				B1ACB7FB1AF6ADA200E0AC4D /* GAILogger.h */,
+				B1ACB7FC1AF6ADA200E0AC4D /* GAITrackedViewController.h */,
+				B1ACB7FD1AF6ADA200E0AC4D /* GAITracker.h */,
+			);
+			name = Library;
+			path = GA/Library;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -404,6 +465,10 @@
 				);
 				INFOPLIST_FILE = ScoopsPro/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/ScoopsPro",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -418,6 +483,10 @@
 				);
 				INFOPLIST_FILE = ScoopsPro/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/ScoopsPro",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

@@ -38,3 +38,8 @@
 //Notifications
 #define SCOOP_DID_CHANGE_NOTIFICATION @"SCOOP_DID_CHANGE_NOTIFICATION"
 
+//Google Analitics
+#define GAIDSEG @"UA-62558195-1"
+
+
+

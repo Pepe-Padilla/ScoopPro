@@ -10,8 +10,9 @@
 @class MXWScoop;
 @class MXWScoopFeed;
 #import "MXWScoopsTableViewController.h"
+#import "GAITrackedViewController.h"
 
-@interface MXWViewController : UIViewController <UISplitViewControllerDelegate,UIImagePickerControllerDelegate, UINavigationControllerDelegate,MXWScoopTableViewControllerDelegate>
+@interface MXWViewController : GAITrackedViewController <UISplitViewControllerDelegate,UIImagePickerControllerDelegate, UINavigationControllerDelegate,MXWScoopTableViewControllerDelegate>
 
 //@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 

@@ -10,6 +10,9 @@
 #import "MXWScoop.h"
 #import "MXWScoopFeed.h"
 #import "Header.h"
+#import "GAI.h"
+#import "GAIDictionaryBuilder.h"
+
 
 @interface MXWViewController ()
 
@@ -23,6 +26,12 @@
     if (self = [super initWithNibName:nil bundle:nil]) {
         _scoopFeed = scoopFeed;
         _scoop = aScoop;
+        [GAI sharedInstance].trackUncaughtExceptions = YES;
+        [GAI sharedInstance].dispatchInterval = 30;
+        [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelVerbose];
+        [[GAI sharedInstance] trackerWithTrackingId:GAIDSEG];
+        
+        self.tracker = [[GAI sharedInstance] defaultTracker];
     }
     
     return  self;
@@ -36,6 +45,11 @@
     
     [self chargeInitialValues];
     [self toolBarButtons];
+    
+    if (self.scoop) {
+        // puede ser el tiutlo de la vista o cualquier otro texto
+        self.screenName = self.scoop.titleScoop;
+    }
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter ];
     [nc addObserver:self
@@ -150,6 +164,11 @@
 #pragma mark - actions
 - (void) scoopPhoto {
     
+    [self.tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Scoop Edition"
+                                                               action:@"select photo"
+                                                                label:@"Scoop"
+                                                                value:nil] build]];
+    
     self.scoop.titleScoop = self.textFieldTitleScoop.text;
     self.scoop.textScoop = self.textViewTextScoop.text;
     
@@ -174,6 +193,12 @@
 
 
 -(void) deleteScoop {
+    
+    [self.tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Scoop Edition"
+                                                               action:@"Delete Scoop"
+                                                                label:@"Scoop"
+                                                                value:nil] build]];
+    
     [self.scoopFeed deleteScoopWithScoop:self.scoop];
     self.scoop = [[MXWScoop alloc] init];
     [self chargeInitialValues];
@@ -181,6 +206,12 @@
 }
 
 -(void) saveScoop{
+    
+    [self.tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Scoop Edition"
+                                                               action:@"Save Scoop"
+                                                                label:@"Scoop"
+                                                                value:nil] build]];
+    
     self.scoop.titleScoop = self.textFieldTitleScoop.text;
     self.scoop.textScoop = self.textViewTextScoop.text;
     self.scoop.imageScoop = self.imageViewPictureScoop.image;
@@ -188,6 +219,12 @@
 }
 
 -(void) submitScoop {
+    
+    [self.tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Scoop Edition"
+                                                               action:@"Submit Scoop"
+                                                                label:@"Scoop"
+                                                                value:nil] build]];
+    
     self.scoop.titleScoop = self.textFieldTitleScoop.text;
     self.scoop.textScoop = self.textViewTextScoop.text;
     self.scoop.status = MXWSTATUS_SUBMITTED;
@@ -200,6 +237,11 @@
 - (void) singleTapping: (id) obj {
     UIGestureRecognizer *aRec=obj;
     if (aRec.state == UIGestureRecognizerStateRecognized) {
+        
+        [self.tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Scoop Ranking"
+                                                                   action:@"Ranked"
+                                                                    label:@"Scoop"
+                                                                    value:nil] build]];
         
         BOOL rankFouded = NO;
         
@@ -214,6 +256,7 @@
                 if ([[rank.gestureRecognizers objectAtIndex:j]isEqual:obj]) {
                     //rank it with i value!!!
                     rankFouded = YES;
+                    
                     NSLog(@"precionó el rango: %ld",(long)i+1);
                     [self.scoopFeed rankScoop:self.scoop
                                         value:(i+1)
@@ -272,6 +315,11 @@
     self.scoop = aScoop;
     [self chargeInitialValues];
     [self toolBarButtons];
+    
+    if (self.scoop) {
+        // puede ser el tiutlo de la vista o cualquier otro texto
+        self.screenName = self.scoop.titleScoop;
+    }
     
 }
 
