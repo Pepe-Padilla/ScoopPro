@@ -134,8 +134,14 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
     if (self.myAuthor) {
+        if (self.theScoops.myScoops.count == 0 && self.theScoops.loadingMyScoops) {
+            return 1;
+        }
         return self.theScoops.myScoops.count;
     } else {
+        if (self.theScoops.worldScoops.count == 0 && self.theScoops.loadingWorldScoops) {
+            return 1;
+        }
         return self.theScoops.worldScoops.count;
     }
 }
@@ -150,6 +156,15 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
                                       reuseIdentifier:cellID];
     }
+    //if loading
+    if ((self.myAuthor && self.theScoops.myScoops.count == 0 && self.theScoops.loadingMyScoops) ||
+        (!self.myAuthor && self.theScoops.worldScoops.count == 0 && self.theScoops.loadingWorldScoops)) {
+        cell.imageView.image = nil;
+        cell.textLabel.text = @"Loading...";
+        cell.detailTextLabel.text = @"";
+        return cell;
+    }
+    
     
     MXWScoop * aScoop = nil;
     if (self.myAuthor) {

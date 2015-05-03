@@ -16,7 +16,6 @@ typedef void (^CompletionWithSasBlock) (NSString *sasUrl);
 
 
 @property (strong, nonatomic) MSClient * client;
-@property (strong, nonatomic) MSClient * clientBlob;
 
 
 //@property (strong, nonatomic) NSMutableDictionary * scoopsD;
@@ -27,6 +26,9 @@ typedef void (^CompletionWithSasBlock) (NSString *sasUrl);
 
 @property (strong, nonatomic) NSMutableArray * worldScoops;
 @property (strong, nonatomic) NSMutableArray * myScoops;
+
+@property (nonatomic,readonly) BOOL loadingMyScoops;
+@property (nonatomic,readonly) BOOL loadingWorldScoops;
 
 //@property (strong, nonatomic) MS
 

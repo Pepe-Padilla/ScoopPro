@@ -22,31 +22,39 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    MXWScoopFeed * sf = [[MXWScoopFeed alloc] init];
-    
-    MXWScoopsTableViewController* stVC = [[MXWScoopsTableViewController alloc] initWithModel:sf];
-    
-    MXWScoop * fScoop = [[MXWScoop alloc] init];
-    
-    MXWViewController * sVC = [[MXWViewController alloc] initWithScoopFeeder:sf andModel:fScoop];
-    
-    UINavigationController * sp1Nav = [UINavigationController new];
-    [sp1Nav pushViewController:stVC animated:NO];
-    
-    UINavigationController * sp2Nav = [UINavigationController new];
-    [sp2Nav pushViewController:sVC animated:NO];
-    
-    UISplitViewController * spVC = [UISplitViewController new];
-    spVC.viewControllers = @[sp1Nav,sp2Nav];
-    
-    spVC.delegate = sVC;
-    stVC.delegate = sVC;
     
     self.window = [[UIWindow alloc] initWithFrame:
                    [[UIScreen mainScreen] bounds]];
     
-    self.window.rootViewController = spVC;
+    MXWScoopFeed * sf = [[MXWScoopFeed alloc] init];
     
+    MXWScoopsTableViewController* stVC = [[MXWScoopsTableViewController alloc] initWithModel:sf];
+    
+    UINavigationController * sp1Nav = [UINavigationController new];
+    [sp1Nav pushViewController:stVC animated:NO];
+    
+    
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        //for ipad
+        MXWScoop * fScoop = [[MXWScoop alloc] init];
+        MXWViewController * sVC = [[MXWViewController alloc] initWithScoopFeeder:sf andModel:fScoop];
+        UINavigationController * sp2Nav = [UINavigationController new];
+        [sp2Nav pushViewController:sVC animated:NO];
+        
+        UISplitViewController * spVC = [UISplitViewController new];
+        spVC.viewControllers = @[sp1Nav,sp2Nav];
+        
+        spVC.delegate = sVC;
+        stVC.delegate = sVC;
+        
+        self.window.rootViewController = spVC;
+        
+    } else {
+        //for iphone
+        stVC.delegate = stVC;
+        self.window.rootViewController = sp1Nav;
+        
+    }
     [self.window makeKeyAndVisible];
     
     return YES;

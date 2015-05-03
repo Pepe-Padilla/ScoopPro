@@ -9,6 +9,13 @@
 #import "MXWScoopFeed.h"
 #import "Header.h"
 #import "MXWScoop.h"
+@import CoreLocation;
+
+@interface MXWScoopFeed () <CLLocationManagerDelegate>
+@property (strong, nonatomic) CLLocationManager * locationManager;
+@property (strong, nonatomic) CLLocation * authorLocation;
+
+@end
 
 
 @implementation MXWScoopFeed
@@ -18,6 +25,8 @@
     if (self = [super init]) {
         _worldScoops = [[NSMutableArray alloc] init];
         _myScoops = [[NSMutableArray alloc] init];
+        _loadingMyScoops = YES;
+        _loadingWorldScoops = YES;
     }
     
     return self;
@@ -29,14 +38,12 @@
     self.client = [MSClient clientWithApplicationURL: [NSURL URLWithString:KAZURE_ENDPOINT]
                                       applicationKey: KAZURE_APPKEY];
     
-    self.clientBlob= [MSClient clientWithApplicationURL: [NSURL URLWithString:KAZURE_BLOBURL]
-                                         applicationKey: KAZURE_BLOBKEY];
-    
     NSLog(@"%@", self.client.debugDescription);
-    NSLog(@"%@", self.clientBlob.debugDescription);
 }
 
 -(void) chargeTables {
+    
+    [self locationStarter];
     
     MSTable *table = [self.client tableWithName:@"news"];
     
@@ -55,23 +62,43 @@
             NSLog(@"error at query: %@", error);
             //completionBlock(error); return;
         }
+        
         for (id item in items) {
             NSLog(@"item -> %@", item);
             
             MXWScoop * scoop = [[MXWScoop alloc] initWithDictionary: item];
             
-            if (![scoop.photoImg isEqualToString:@""] && scoop.photoImg)
-                scoop.imageScoop = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:scoop.photoImg]]];
+            /*[self handleSaSURLToDownload:[NSURL URLWithString:scoop.photoImg]
+                     completionHandleSaS:^(id result, NSError *error) {
+                     
+                   scoop.imageScoop = result;
+                   NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+                   NSNotification * n = [NSNotification notificationWithName: SCOOP_DID_CHANGE_NOTIFICATION
+                                                                      object: self
+                                                                    userInfo: nil ];
+                   [nc postNotification:n];
+               }];*/
+            
+            [self imageOfScoop:scoop
+               completionBlock:^(UIImage *image) {
+                   scoop.imageScoop = image;
+                   NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+                   NSNotification * n = [NSNotification notificationWithName: SCOOP_DID_CHANGE_NOTIFICATION
+                                                                      object: self
+                                                                    userInfo: nil ];
+                   [nc postNotification:n];
+               }];
             
             [self addWorldScoopsObject:scoop];
-            
+            _loadingWorldScoops = NO;
+
             NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
             NSNotification * n = [NSNotification notificationWithName: SCOOP_DID_CHANGE_NOTIFICATION
                                                                object: self
                                                              userInfo: nil ];
             [nc postNotification:n];
-            
         }
+        _loadingWorldScoops = NO;
     }];
     
     MSTable *tableA = [self.client tableWithName:@"news"];
@@ -93,9 +120,31 @@
             
             MXWScoop * scoop = [[MXWScoop alloc] initWithDictionary: item];
             
-            if (![scoop.photoImg isEqualToString:@""] && scoop.photoImg)
-                scoop.imageScoop = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:scoop.photoImg]]];
             
+            /*[self handleSaSURLToDownload:[NSURL URLWithString:scoop.photoImg]
+                     completionHandleSaS:^(id result, NSError *error) {
+                         
+                         
+                         scoop.imageScoop = result;
+                         //[self addMyScoopsObject:scoop];
+                         //_loadingMyScoops = NO;
+                         NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+                         NSNotification * n = [NSNotification notificationWithName: SCOOP_DID_CHANGE_NOTIFICATION
+                                                                            object: self
+                                                                          userInfo: nil ];
+                         [nc postNotification:n];
+                     }];*/
+
+            
+            [self imageOfScoop:scoop
+               completionBlock:^(UIImage *image) {
+                   scoop.imageScoop = image;
+                   NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+                   NSNotification * n = [NSNotification notificationWithName: SCOOP_DID_CHANGE_NOTIFICATION
+                                                                      object: self
+                                                                    userInfo: nil ];
+                   [nc postNotification:n];
+               }];
             
             [self addMyScoopsObject:scoop];
             
@@ -104,7 +153,10 @@
                                                                object: self
                                                              userInfo: nil ];
             [nc postNotification:n];
+            _loadingMyScoops = NO;
+            
         }
+        _loadingMyScoops = NO;
     }];
     
     //completionBlock(nil);
@@ -156,28 +208,48 @@
     if ([scoopMod intValue] > -1) {
         MSTable *table = [self.client tableWithName:@"news"];
         
-        if (aScoop.imageScoop) {
-            aScoop.photoImg = [self setScoop:aScoop image:aScoop.imageScoop];
-        }
-        
-        [table update:[aScoop dictionaryForScoop]
-           completion:^(NSDictionary *item, NSError *error) {
-               if (error) {
-                   NSLog(@"Error en el update");
-               } else {
-                   MXWScoop * newScoop = [[MXWScoop alloc] initWithDictionary:item];
-                   [self replaceObjectInMyScoopsAtIndex:[scoopMod unsignedIntegerValue]
-                                             withObject:newScoop];
-                   
-                   if (![newScoop.status isEqualToNumber:aScoop.status]) {
-                       NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-                       NSNotification * n = [NSNotification notificationWithName: SCOOP_DID_CHANGE_NOTIFICATION
-                                                                          object: self
-                                                                        userInfo: nil ];
-                       [nc postNotification:n];
+        [self getSasUrlWithScoop:aScoop withCompletion:^(NSString *sasUrl) {
+            
+            if(sasUrl)
+                aScoop.photoImg = [NSString stringWithFormat:@"%@%@/%@.jpg",KAZURE_BLOBURL,KAZURE_BLOBCONTAINERNAME,aScoop.scoopID];
+            
+            if(self.authorLocation) {
+                aScoop.latitude = [NSNumber numberWithDouble:self.authorLocation.coordinate.latitude];
+                aScoop.longitude = [NSNumber numberWithDouble:self.authorLocation.coordinate.longitude];
+            }
+            
+            if (aScoop.imageScoop && aScoop.photoImg && ![aScoop.photoImg isEqualToString:@""])
+            [self handleImageToUploadAzureBlob:[NSURL URLWithString:sasUrl]
+                                       blobImg:aScoop.imageScoop
+                          completionUploadTask:^(id result, NSError *error) {
+                              if (error) NSLog(@"error ar upload image --> %@", error);
+                              else NSLog(@"Upload Image OK: %@", result);
+                          }];
+            
+            [table update:[aScoop dictionaryForScoop]
+               completion:^(NSDictionary *item, NSError *error) {
+                   if (error) {
+                       NSLog(@"Error en el update");
+                   } else {
+                       MXWScoop * newScoop = [[MXWScoop alloc] initWithDictionary:item];
+                       newScoop.imageScoop = aScoop.imageScoop;
+                       [self replaceObjectInMyScoopsAtIndex:[scoopMod unsignedIntegerValue]
+                                                 withObject:newScoop];
+                       
+                       if ([newScoop.status isEqualToNumber:MXWSTATUS_SUBMITTED] ||
+                           [newScoop.status isEqualToNumber:MXWSTATUS_EDITING]) {
+                           
+                           NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+                           NSNotification * n = [NSNotification notificationWithName: SCOOP_DID_CHANGE_NOTIFICATION
+                                                                              object: self
+                                                                            userInfo: nil ];
+                           [nc postNotification:n];
+                       }
                    }
-               }
-           }];
+               }];
+            
+            
+        }];
     } else NSLog(@"Scoop no reconocido en el update");
     
     
@@ -234,53 +306,47 @@
 }
 
 #pragma mark - storage
-- (NSString*) setScoop:(MXWScoop*) aScoop image: (UIImage*) anImage {
-    
-    //[self getSasUrlForNewBlob: [NSString stringWithFormat:@"%@.jpg",aScoop.scoopID]
-    //             forContainer: KAZURE_BLOBACOUNTNAME
-    //           withCompletion: ^(NSString *sasUrl) {
-    NSString * sasUrl = [NSString stringWithFormat:@"%@%@/",KAZURE_BLOBURL,KAZURE_BLOBACOUNTNAME];
-                   NSData *imageData = UIImageJPEGRepresentation(anImage, 0.5);
-                   
-                   NSURL *urlIMG = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@.jpg",sasUrl,aScoop.scoopID]];
-                   
-                   NSMutableURLRequest* theRequest = [NSMutableURLRequest requestWithURL: urlIMG ];
-                   [theRequest setHTTPMethod: @"PUT"];
-                   [theRequest setHTTPBody: imageData];
-                   [theRequest setValue:@"image/JPG" forHTTPHeaderField:@"Content-Type"];
-                   [theRequest setValue:@"BlockBlob"  forHTTPHeaderField:@"x-ms-blob-type"];
-                   [theRequest setValue:[NSString stringWithFormat:@"%@",[NSDate date]] forHTTPHeaderField:@"x-ms-date"];
-                   [theRequest setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[imageData length]] forHTTPHeaderField:@"Content-Length"];
-                   [theRequest setValue:[NSString stringWithFormat:@"SharedKey %@:%@",@"storagekas",KAZURE_BLOBKEY] forHTTPHeaderField:@"Authorization"];
-                   //nuevos x2
-                   //[theRequest setValue:@"containerName" forHTTPHeaderField:KAZURE_BLOBACOUNTNAME];
-                   //[theRequest setValue:@"blobName" forHTTPHeaderField:[NSString stringWithFormat:@"%@.jpg",aScoop.scoopID]];
-                   NSData *response;
-                   NSError *WSerror;
-                   NSURLResponse *WSresponse;
-                   NSString *responseString;
-                   response = [NSURLConnection sendSynchronousRequest:theRequest returningResponse:&WSresponse error:&WSerror];
-                   responseString = [[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding];
-                   NSLog(@"%@",responseString);
-    //           }];
 
+- (void)handleImageToUploadAzureBlob:(NSURL *)theURL
+                             blobImg:(UIImage*)blobImg
+                completionUploadTask:(void (^)(id result, NSError * error))completion{
     
-    //MSTable * blobTable = [self.client tableWithName:@"storagekas"];
-    //NSDictionary *params = @{ @"containerName" : KAZURE_BLOBACOUNTNAME, @"blobName" : [NSString stringWithFormat:@"%@.jpg",aScoop.scoopID]};
+    NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:theURL];
     
-    //[blobTable ];
+    [request setHTTPMethod:@"PUT"];
+    [request setValue:@"image/jpeg" forHTTPHeaderField:@"Content-Type"];
     
-    return [NSString stringWithFormat:@"%@%@/%@.jpg",KAZURE_BLOBURL,KAZURE_BLOBACOUNTNAME,aScoop.scoopID];
+    NSData *data = UIImageJPEGRepresentation(blobImg, 1.f);
+    
+    NSURLSessionUploadTask *uploadTask = [[NSURLSession sharedSession] uploadTaskWithRequest:request fromData:data completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        
+        if (!error) {
+            NSLog(@"resultado --> %@", response);
+        } else NSLog(@"error al subir imagen: %@",error);
+        
+    }];
+    [uploadTask resume];
 }
 
-- (void) getSasUrlForNewBlob:(NSString *)blobName forContainer:(NSString *)containerName withCompletion:(CompletionWithSasBlock) completion {
-    MSTable * blobTable = [self.clientBlob tableWithName:@"containerkas"];
-    NSDictionary *item = @{  };
-    NSDictionary *params = @{ @"containerName" : containerName, @"blobName" : blobName };
-    [blobTable insert:item parameters:params completion:^(NSDictionary *item, NSError *error) {
-        NSLog(@"Item: %@", item);
-        completion([item objectForKey:@"sasUrl"]);
-    }];
+- (void) getSasUrlWithScoop: (MXWScoop *) aScoop
+             withCompletion:(CompletionWithSasBlock) completion {
+    if (!aScoop.imageScoop) {
+        completion(@"");
+    } else
+    [self.client invokeAPI:@"sasurl"
+                      body:nil
+                HTTPMethod:@"GET"
+                parameters:@{@"blobName" : [aScoop.scoopID stringByAppendingString:@".jpg"], @"blobContainer" : KAZURE_BLOBCONTAINERNAME}
+                   headers:nil
+                completion:^(id result, NSHTTPURLResponse *response, NSError *error) {
+                    if (error) {
+                        NSLog(@"%@",error);
+                        completion(@"");
+                    }
+                    
+                    NSLog(@"header of sasurl --> %@",[result valueForKey:@"sasUrl"]);
+                    completion([result valueForKey:@"sasUrl"]);
+                }];
 }
 
 - (void) imageOfScoop: (MXWScoop *) aScoop
@@ -309,6 +375,79 @@
     
 }
 
+- (void)handleSaSURLToDownload:(NSURL *)theUrl completionHandleSaS:(void (^)(id result, NSError *error))completion{
+    
+    if(theUrl && ![[theUrl absoluteString] isEqualToString:@""]) {
+        NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:theUrl];
+        
+        [request setHTTPMethod:@"GET"];
+        [request setValue:@"image/jpeg" forHTTPHeaderField:@"Content-Type"];
+        
+        NSURLSessionDownloadTask * downloadTask = [[NSURLSession sharedSession]downloadTaskWithRequest:request completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
+            
+            if (!error) {
+                
+                NSLog(@"resultado --> %@", response);
+                UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:location]];
+                completion(image, error);
+            } else completion(nil,error);
+            
+            
+            
+        }];
+        [downloadTask resume];
+    } else {
+        completion (nil,nil);
+    }
+    
+}
+
+
+
+#pragma mark - Geo Localization
+- (void) locationStarter {
+    
+    CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
+    
+    if((status == kCLAuthorizationStatusAuthorizedAlways ||
+        status == kCLAuthorizationStatusAuthorizedWhenInUse ||
+        status == kCLAuthorizationStatusNotDetermined) &&
+       [CLLocationManager locationServicesEnabled] &&
+       !self.authorLocation) {
+        // tenemos permisos para usar la geolocalización
+        
+        if (status == kCLAuthorizationStatusNotDetermined) {
+            [self.locationManager requestWhenInUseAuthorization];
+        }
+        self.locationManager = [CLLocationManager new];
+        self.locationManager.delegate = self;
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        
+        [self.locationManager startUpdatingLocation];
+        
+        NSLog(@"Stariting location");
+        
+    }
+}
+
+#pragma mark - CLLocationManagerDelegate
+-(void) locationManager:(CLLocationManager *)manager
+     didUpdateLocations:(NSArray *)locations {
+    
+    // parar la geolocalización
+    [self.locationManager stopUpdatingLocation];
+    self.locationManager = nil;
+    NSLog(@"Localization Stoped");
+    
+    self.authorLocation = [locations lastObject];
+}
+
+-(void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
+    // parar la geolocalización
+    [self.locationManager stopUpdatingLocation];
+    self.locationManager = nil;
+    NSLog(@"Localization Stoped with errors: %@", error);
+}
 
 #pragma mark - Login FB
 - (void) loginAppInViewController: (UIViewController*) controller

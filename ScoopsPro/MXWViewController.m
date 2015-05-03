@@ -13,6 +13,7 @@
 
 @interface MXWViewController ()
 
+
 @end
 
 @implementation MXWViewController
@@ -35,6 +36,21 @@
     
     [self chargeInitialValues];
     [self toolBarButtons];
+    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter ];
+    [nc addObserver:self
+           selector:@selector(notifyThatScoopDidChange:)
+               name:SCOOP_DID_CHANGE_NOTIFICATION
+             object:nil];
+}
+-(void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+-(void)notifyThatScoopDidChange:(NSNotification*) notification{
+    if (![self.imageViewPictureScoop.image isEqual:self.scoop.imageScoop])
+        self.imageViewPictureScoop.image = self.scoop.imageScoop;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -167,6 +183,7 @@
 -(void) saveScoop{
     self.scoop.titleScoop = self.textFieldTitleScoop.text;
     self.scoop.textScoop = self.textViewTextScoop.text;
+    self.scoop.imageScoop = self.imageViewPictureScoop.image;
     [self.scoopFeed updateScoopWithScoop:self.scoop];
 }
 
@@ -174,6 +191,7 @@
     self.scoop.titleScoop = self.textFieldTitleScoop.text;
     self.scoop.textScoop = self.textViewTextScoop.text;
     self.scoop.status = MXWSTATUS_SUBMITTED;
+    self.scoop.imageScoop = self.imageViewPictureScoop.image;
     [self.scoopFeed updateScoopWithScoop:self.scoop];
     [self chargeInitialValues];
     self.navigationItem.rightBarButtonItems = @[];
@@ -237,6 +255,7 @@
     
     //La guardo en el modelo y la despliego
     self.scoop.imageScoop = img;
+    self.imageViewPictureScoop.image = img;
     
     [self dismissViewControllerAnimated:YES
                              completion:^{
